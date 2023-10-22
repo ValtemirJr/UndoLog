@@ -1,5 +1,7 @@
+const { read } = require('fs');
 const createTableFromMetadata = require('./scripts/createTableFromMetadata');
 const connectToDatabase = require('./scripts/dbConnect');
+const readLog = require('./scripts/readLog');
 
 async function main() {
   let client; // Variável para armazenar a conexão com o banco de dados
@@ -11,6 +13,8 @@ async function main() {
 
     // Cria a tabela e insere os valores iniciais a partir do arquivo metadata.json
     await createTableFromMetadata(client);
+
+    readLog();
 
     await client.query('COMMIT');
     console.log('Operação concluída com sucesso.');
