@@ -5,6 +5,9 @@ async function createTableFromMetadata() {
   try {
     const db = await connectToDatabase();
     const { table } = metadata;
+
+    // Dropa a tabela se ela já existir
+    await db.query(`DROP TABLE IF EXISTS ${table.table_name};`);
     
     // Monta a definição da tabela com base no JSON
     const tableColumns = Object.keys(table).map((columnName) => `${columnName} INT`);
