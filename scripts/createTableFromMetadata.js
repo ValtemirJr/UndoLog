@@ -25,7 +25,7 @@ async function createTableFromMetadata() {
     const insertInitialValuesSQL = `
       INSERT INTO ${table.table_name} (${columnNames})
       VALUES 
-      ${table.id.map((id, index) => `(${id}, ${table.A[index]}, ${table.B[index]})`).join(', ')}
+        ${table.id.map((id, index) => `(${Object.values(table).map((column) => column[index]).join(', ')})`).join(', ')}
     `;
 
     await db.query(insertInitialValuesSQL);
