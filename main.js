@@ -17,7 +17,6 @@ async function main() {
     readLog();
 
     await client.query('COMMIT');
-    console.log('Operação concluída com sucesso.');
   } catch (error) {
     if (client) {
       await client.query('ROLLBACK');

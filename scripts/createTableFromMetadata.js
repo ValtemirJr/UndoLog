@@ -18,7 +18,6 @@ async function createTableFromMetadata() {
     `;
     
     await db.query(createTableSQL);
-    console.log('Tabela criada com sucesso.');
 
     // Itera sobre os dados e insere cada tupla
     const columnNames = Object.keys(table).join(', ');
@@ -29,7 +28,6 @@ async function createTableFromMetadata() {
     `;
 
     await db.query(insertInitialValuesSQL);
-    console.log('Valores iniciais inseridos com sucesso.');
   } catch (error) {
     console.error('Erro ao criar a tabela e inserir os valores iniciais:', error);
   }

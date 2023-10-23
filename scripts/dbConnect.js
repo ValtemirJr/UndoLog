@@ -15,7 +15,6 @@ async function connectToDatabase() {
   const client = new Client(dbConfig);
   try {
     await client.connect();
-    console.log('Conectado ao banco de dados');
     return client;
   } catch (error) {
     console.error('Erro na conexão:', error);
