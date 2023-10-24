@@ -28,6 +28,8 @@ async function createTableFromMetadata() {
     `;
 
     await db.query(insertInitialValuesSQL);
+
+    await db.end();
   } catch (error) {
     console.error('Erro ao criar a tabela e inserir os valores iniciais:', error);
   }

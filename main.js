@@ -27,9 +27,7 @@ async function main() {
     }
     console.error('Erro durante a execução:', error);
   } finally {
-    if (client) {
-      await client.end(); // Encerra a conexão com o banco de dados
-    }
+    await client.end(); // Encerra a conexão com o banco de dados
   }
 }
 

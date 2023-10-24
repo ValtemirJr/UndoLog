@@ -2,7 +2,7 @@
 <T1,1, A,20>
 <start T2>
 <commit T1>
-<START CKPT(T2,)>
+<START CKPT(T2)>
 <T2,2, B,20>	
 <commit T2>
 <END CKPT>

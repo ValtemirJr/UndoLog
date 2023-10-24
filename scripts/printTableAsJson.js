@@ -21,12 +21,11 @@ async function printTableAsJson() {
         formattedData.id.push(row.id);
         formattedData.A.push(row.a);
         formattedData.B.push(row.b);
-    });
+    }); // <-- added closing parenthesis here
 
     // Compara os objetos e imprime os valores que não sofreram UNDO
     const jsonMetadataKeys = Object.keys(jsonMetadata);
 
-    console.log('\nOs valores novos são:');
     for (let i = 0; i < jsonMetadataKeys.length; i++) {
         const key = jsonMetadataKeys[i];
         const jsonMetadataValues = jsonMetadata[key];
@@ -35,10 +34,12 @@ async function printTableAsJson() {
         for (let j = 0; j < jsonMetadataValues.length; j++) {
             if (jsonMetadataValues[j] == formattedDataValues[j]) {
                 if (key == 'id') continue;
-                console.log(`Tupla ${formattedData.id[j]}: ${key} = ${formattedDataValues[j]}`);
+                process.stdout.write(`${formattedDataValues[j]}, `);
             }
         }
     }
+
+    process.stdout.write('são os novos valores\n');
 
     // Encerra a conexão com o banco de dados
     await db.end();
