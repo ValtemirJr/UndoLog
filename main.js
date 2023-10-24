@@ -1,7 +1,7 @@
-const { read } = require('fs');
 const createTableFromMetadata = require('./scripts/createTableFromMetadata');
 const connectToDatabase = require('./scripts/dbConnect');
 const readLog = require('./scripts/readLog');
+const printTableAsJson = require('./scripts/printTableAsJson');
 
 async function main() {
   let client; // Variável para armazenar a conexão com o banco de dados
@@ -14,7 +14,11 @@ async function main() {
     // Cria a tabela e insere os valores iniciais a partir do arquivo metadata.json
     await createTableFromMetadata(client);
 
-    readLog();
+    // Lê o log e executa o UNDO
+    await readLog();
+
+    // Imprime a tabela final como JSON
+    await printTableAsJson(client);
 
     await client.query('COMMIT');
   } catch (error) {
