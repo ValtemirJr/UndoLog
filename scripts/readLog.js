@@ -5,10 +5,13 @@ const connectToDatabase = require("./dbConnect");
 const regexTransacao = /<T\d+,\d+, .+,\d+>/;
 const regexStart = /<start T\d+>/;
 const regexCommit = /<commit T\d+>/;
+const regexCkpt = /<START CKPT\(T\d+\)>/;
+const regexEndCkpt = /<END CKPT>/;
 
 const listaTransacoesSemCommit = [];
 const listaStartSemCommitESemTransacao = [];
 const transacoesJaImpressas = new Set(); // Conjunto para acompanhar transações impressas
+let achouEndPoint = false;
 
 async function readLog() {
   const log = fs.readFileSync("./dataFiles/entryLog.txt", "utf-8");
@@ -44,6 +47,10 @@ async function readLog() {
         listaStartSemCommitESemTransacao.push(linha);
         transacoesJaImpressas.add(transacao); // Adiciona à lista de transações impressas
       }
+    } else if(regexCkpt.test(linha) && achouEndPoint) {
+      break;
+    } else if(regexEndCkpt.test(linha)) {
+      achouEndPoint = true;
     } else {
       continue;
     }
