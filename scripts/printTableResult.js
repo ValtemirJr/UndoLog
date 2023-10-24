@@ -1,7 +1,7 @@
 const connectToDatabase = require('./dbConnect');
 const metadata = require('../dataFiles/metadata.json');
 
-async function printTableAsJson() {
+async function printTableResult() {
     // Formata o JSON para comparação
     let jsonMetadata = metadata.table;
 
@@ -21,7 +21,7 @@ async function printTableAsJson() {
         formattedData.id.push(row.id);
         formattedData.A.push(row.a);
         formattedData.B.push(row.b);
-    }); // <-- added closing parenthesis here
+    });
 
     // Compara os objetos e imprime os valores que não sofreram UNDO
     const jsonMetadataKeys = Object.keys(jsonMetadata);
@@ -45,4 +45,4 @@ async function printTableAsJson() {
     await db.end();
 }
 
-module.exports = printTableAsJson;
+module.exports = printTableResult;

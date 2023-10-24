@@ -1,7 +1,7 @@
 const createTableFromMetadata = require('./scripts/createTableFromMetadata');
 const connectToDatabase = require('./scripts/dbConnect');
 const readLog = require('./scripts/readLog');
-const printTableAsJson = require('./scripts/printTableAsJson');
+const printTableResult = require('./scripts/printTableResult');
 
 async function main() {
   let client; // Variável para armazenar a conexão com o banco de dados
@@ -17,8 +17,8 @@ async function main() {
     // Lê o log e executa o UNDO
     await readLog();
 
-    // Imprime a tabela final como JSON
-    await printTableAsJson(client);
+    // Imprime os resultados do UNDO
+    await printTableResult(client);
 
     await client.query('COMMIT');
   } catch (error) {
