@@ -23,7 +23,6 @@ async function createTableFromMetadata() {
       );
     `;
 
-    console.log(createTableSQL);
     await db.query(createTableSQL);
 
     // Remove o atributo table_name do objeto table
@@ -31,9 +30,6 @@ async function createTableFromMetadata() {
 
     // Itera sobre os dados e insere cada tupla
     const columnNames = Object.keys(table).join(', ');
-    console.log(columnNames);
-
-    console.log(table);
     
     const numRows = Math.max(...Object.values(table).map(arr => arr.length));
 
@@ -50,8 +46,6 @@ async function createTableFromMetadata() {
       VALUES 
         ${insertValues.join(', ')}
     `;
-
-    console.log(insertInitialValuesSQL);
 
     await db.query(insertInitialValuesSQL);
 
