@@ -7,7 +7,7 @@ async function printTableResult() {
 
     // Conecta com o banco de dados e busca os dados da tabela pós-UNDO
     const db = await connectToDatabase();
-    const { rows } = await db.query('SELECT * FROM undefined ORDER BY id;');
+    const { rows } = await db.query('SELECT * FROM log ORDER BY id;');
     
     // Inicializa um objeto para conter os dados formatados
     const formattedData = {
