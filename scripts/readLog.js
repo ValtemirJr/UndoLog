@@ -77,7 +77,7 @@ async function readLog() {
     try {
       const db = await connectToDatabase();
       // Executa o UNDO                     // Coluna        // Valor                 // ID
-      const undo = `UPDATE undefined SET ${valores[1]} = ${valores[2]} WHERE id = ${valores[0]};`;
+      const undo = `UPDATE log SET ${valores[1]} = ${valores[2]} WHERE id = ${valores[0]};`;
       await db.query(undo);
       // Imprime o resultado do UNDO
       console.log(`Transação T${index.match(/<T(\d+),/)[1]} realizou UNDO`);
@@ -87,6 +87,7 @@ async function readLog() {
       
     } catch (error) {
       console.error("Erro ao realizar UNDO:", error);
+      await db.end();
     }
   }
 }
