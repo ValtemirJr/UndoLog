@@ -25,36 +25,33 @@ async function readLog() {
     // Se a linha for de transação, verifica se ela possui commit
     if (regexTransacao.test(linha)) {
       const transacao = linha.match(/<T(\d+),/)[1]; // Extrai o número da transação
-      const commitEncontrado = logArray.some( // Busca por um commit que contenha o número da transação
+      const commitEncontrado = logArray.some(
+        // Busca por um commit que contenha o número da transação
         (l) => regexCommit.test(l) && l.includes(`T${transacao}`)
       );
       // Se a transação não possui commit e ainda não foi impressa, adiciona à lista
-      if (!commitEncontrado && !transacoesJaImpressas.has(transacao)) {
+      if (!commitEncontrado) {
         listaTransacoesSemCommit.push(linha);
-        transacoesJaImpressas.add(transacao); // Adiciona à lista de transações impressas
       }
       // Se a linha for de start, verifica se ela possui commit
     } else if (regexStart.test(linha)) {
       const transacao = linha.match(/<start T(\d+)>/)[1]; // Extrai o número da transação
-      const commitEncontrado = logArray.some( // Busca por um commit que contenha o número da transação
+      const commitEncontrado = logArray.some(
+        // Busca por um commit que contenha o número da transação
         (l) => regexCommit.test(l) && l.includes(`T${transacao}`)
       );
-      const transacaoEncontrada = logArray.some( // Busca a transação no log
+      const transacaoEncontrada = logArray.some(
+        // Busca a transação no log
         (l) => regexTransacao.test(l) && l.includes(`T${transacao}`)
       );
-      if (
-        !commitEncontrado &&
-        !transacaoEncontrada &&
-        !transacoesJaImpressas.has(transacao)
-      ) {
+      if (!commitEncontrado && !transacaoEncontrada) {
         listaStartSemCommitESemTransacao.push(linha);
-        transacoesJaImpressas.add(transacao); // Adiciona à lista de transações impressas
       }
       // Se a linha for de checkpoint e já tiver encontrado o end checkpoint, para a execução
-    } else if(regexCkpt.test(linha) && achouEndPoint) {
+    } else if (regexCkpt.test(linha) && achouEndPoint) {
       break;
       // Se a linha for de end checkpoint, marca que encontrou o end checkpoint
-    } else if(regexEndCkpt.test(linha)) {
+    } else if (regexEndCkpt.test(linha)) {
       achouEndPoint = true;
       // Continua o loop para satisfazer próximas condições do UNDO
     } else {
@@ -74,17 +71,20 @@ async function readLog() {
       .match(/<.+>/)[0]
       .match(/[^<>, ]+/g)
       .slice(1);
+
     try {
       const db = await connectToDatabase();
       // Executa o UNDO                     // Coluna        // Valor                 // ID
       const undo = `UPDATE log SET ${valores[1]} = ${valores[2]} WHERE id = ${valores[0]};`;
       await db.query(undo);
       // Imprime o resultado do UNDO
-      console.log(`Transação T${index.match(/<T(\d+),/)[1]} realizou UNDO`);
 
+      if (!transacoesJaImpressas.has(index.match(/<T(\d+),/)[1])) {
+        console.log(`Transação T${index.match(/<T(\d+),/)[1]} realizou UNDO`);
+        transacoesJaImpressas.add(index.match(/<T(\d+),/)[1]);
+      }
       // Encerra a conexão com o banco de dados
       await db.end();
-      
     } catch (error) {
       console.error("Erro ao realizar UNDO:", error);
       await db.end();
