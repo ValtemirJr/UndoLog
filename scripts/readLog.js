@@ -29,7 +29,7 @@ async function readLog() {
         // Busca por um commit que contenha o número da transação
         (l) => regexCommit.test(l) && l.includes(`T${transacao}`)
       );
-      // Se a transação não possui commit e ainda não foi impressa, adiciona à lista
+      // Se a transação não possui commit, adiciona à lista
       if (!commitEncontrado) {
         listaTransacoesSemCommit.push(linha);
       }
